@@ -1,0 +1,49 @@
+{
+  "expo": {
+    "name": "Comoov",
+    "slug": "comoov",
+    "scheme": "comoov",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "backgroundColor": "#0F1B2D",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#0F1B2D"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.comoov.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Comoov utilise ta position pour te localiser à l'arrêt et suivre la voiture en temps réel.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Comoov suit la position du conducteur pendant la course pour afficher l'arrivée en temps réel."
+      },
+      "config": {
+        "googleMapsApiKey": "REMPLACER_PAR_TA_CLE_GOOGLE_MAPS_IOS"
+      }
+    },
+    "android": {
+      "package": "com.comoov.app",
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"],
+      "config": {
+        "googleMaps": {
+          "apiKey": "REMPLACER_PAR_TA_CLE_GOOGLE_MAPS_ANDROID"
+        }
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Comoov utilise ta position pour te localiser à l'arrêt et suivre la voiture en temps réel."
+        }
+      ]
+    ]
+  }
+}

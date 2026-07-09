@@ -1,0 +1,8 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+
+# pnpm 10 bloque par défaut les scripts de build des dépendances.
+# On autorise explicitement ceux dont on a besoin.
+onlyBuiltDependencies:
+  - esbuild

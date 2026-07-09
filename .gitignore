@@ -1,0 +1,39 @@
+# Dépendances
+node_modules/
+.pnpm-store/
+
+# Builds
+dist/
+build/
+web-build/
+*.tsbuildinfo
+
+# Expo
+.expo/
+.expo-shared/
+apps/mobile/ios/
+apps/mobile/android/
+
+# Environnement / secrets
+.env
+.env.*
+!.env.example
+
+# Supabase
+supabase/.branches/
+supabase/.temp/
+
+# Logs
+*.log
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# Système
+.DS_Store
+Thumbs.db
+
+# Éditeurs
+.vscode/*
+!.vscode/extensions.json
+.idea/

@@ -10,6 +10,7 @@
   "scripts": {
     "mobile": "pnpm --filter @comoov/mobile start",
     "backoffice": "pnpm --filter @comoov/backoffice dev",
+    "test": "pnpm -r --if-present test",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",

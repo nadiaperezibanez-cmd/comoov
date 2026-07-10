@@ -133,7 +133,7 @@ export type RideStatus =
   | 'arrive_a_l_arret' // le conducteur est à l'arrêt
   | 'en_cours' // code vérifié, passager à bord
   | 'terminee' // course terminée à l'arrêt de descente
-  | 'annulee'; // annulée avant la fin
+  | 'annulee'; // annulée — possible uniquement AVANT « en_cours »
 
 export interface Ride {
   id: UUID;
@@ -155,12 +155,14 @@ export interface Ride {
 /**
  * Transitions autorisées de la machine à états d'une course.
  * Toute logique de mise à jour de statut doit passer par `canTransitionRide`.
+ * Règle métier : l'annulation n'est possible qu'AVANT « en_cours » — une fois
+ * le passager à bord, la course va jusqu'à « terminee ».
  */
 export const RIDE_TRANSITIONS: Record<RideStatus, readonly RideStatus[]> = {
   confirmee: ['conducteur_en_route', 'annulee'],
   conducteur_en_route: ['arrive_a_l_arret', 'annulee'],
   arrive_a_l_arret: ['en_cours', 'annulee'],
-  en_cours: ['terminee', 'annulee'],
+  en_cours: ['terminee'],
   terminee: [],
   annulee: [],
 };

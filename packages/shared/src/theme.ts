@@ -10,8 +10,10 @@ export const colors = {
   jauneSignal: '#FFC933',
   /** Fonds clairs, surfaces */
   brume: '#E8EEF4',
-  /** Succès, états « en cours » positifs */
+  /** Succès, gains, états « en cours » positifs */
   vert: '#14B87D',
+  /** Textes secondaires, éléments désactivés */
+  gris: '#64748B',
   /** Neutres utilitaires */
   blanc: '#FFFFFF',
   noir: '#000000',
@@ -37,6 +39,8 @@ export const spacing = {
 export const radius = {
   sm: 8,
   md: 12,
+  /** Boutons principaux : coins arrondis 16 px (charte) */
+  bouton: 16,
   lg: 20,
   pill: 999,
 } as const;

@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   base: {
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.lg,
-    borderRadius: radius.md,
+    borderRadius: radius.bouton,
     alignItems: 'center',
   },
   primary: {

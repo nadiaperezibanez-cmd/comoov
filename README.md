@@ -67,6 +67,7 @@ Configuration : copie `apps/backoffice/.env.example` en
 ## Qualité
 
 ```bash
+pnpm test          # tests (vitest) sur tout le repo
 pnpm lint          # ESLint (flat config) sur tout le repo
 pnpm format        # Prettier --write
 pnpm typecheck     # tsc --noEmit sur chaque package

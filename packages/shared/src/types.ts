@@ -30,6 +30,8 @@ export interface Profile {
   role: Role;
   /** Note moyenne sur 5, null tant qu'aucune note reçue */
   average_rating: number | null;
+  /** Jeton Expo Push du dernier appareil connecté (notifications) */
+  expo_push_token: string | null;
   created_at: Timestamp;
 }
 
@@ -121,6 +123,28 @@ export interface RideRequest {
   /** Expiration de la proposition en cours (15 s après l'envoi) */
   expires_at: Timestamp | null;
   created_at: Timestamp;
+}
+
+/* ------------------------------------------------------------------ *
+ * ride_request_proposals — rotation du matching
+ * ------------------------------------------------------------------ */
+
+export type ProposalOutcome = 'en_cours' | 'acceptee' | 'refusee' | 'expiree';
+
+/**
+ * Une sollicitation d'un conducteur pour une demande donnée. La Edge Function
+ * `match-ride` en crée une par conducteur sollicité ; un conducteur n'est
+ * jamais sollicité deux fois pour la même demande.
+ */
+export interface RideRequestProposal {
+  id: UUID;
+  request_id: UUID;
+  driver_id: UUID;
+  outcome: ProposalOutcome;
+  proposed_at: Timestamp;
+  /** Fin de validité de la proposition (15 s après l'envoi) */
+  expires_at: Timestamp;
+  responded_at: Timestamp | null;
 }
 
 /* ------------------------------------------------------------------ *

@@ -4,7 +4,6 @@
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
     "types": ["vite/client"],
-    "baseUrl": ".",
     "paths": {
       "@comoov/shared": ["../../packages/shared/src/index.ts"],
       "@comoov/shared/*": ["../../packages/shared/src/*"]

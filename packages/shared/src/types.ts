@@ -165,8 +165,6 @@ export interface Ride {
   trip_id: UUID;
   passenger_id: UUID;
   driver_id: UUID;
-  /** Code de montée à 3 chiffres, vérifié par le conducteur */
-  boarding_code: string;
   status: RideStatus;
   /** Distance facturée (km), base du barème kilométrique */
   distance_km: number | null;
@@ -174,6 +172,18 @@ export interface Ride {
   started_at: Timestamp | null;
   completed_at: Timestamp | null;
   cancelled_at: Timestamp | null;
+}
+
+/**
+ * Code de montée d'une course (table `ride_codes`, séparée de `rides`).
+ * Lisible uniquement par le passager : le conducteur ne le connaît que de
+ * vive voix et le fait vérifier par le serveur (verify-boarding-code).
+ */
+export interface RideCode {
+  ride_id: UUID;
+  /** Code à 3 chiffres (« 042 ») */
+  code: string;
+  created_at: Timestamp;
 }
 
 /**

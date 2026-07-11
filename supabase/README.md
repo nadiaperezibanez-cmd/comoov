@@ -4,9 +4,11 @@ Backend Comoov : Postgres, Auth (OTP SMS), Realtime et Edge Functions.
 
 ```
 supabase/
-├── migrations/          # migrations SQL (schéma, RLS, seed) — source de vérité
+├── migrations/               # migrations SQL (schéma, RLS, seed) — source de vérité
 └── functions/
-    └── match-ride/      # Edge Function de matching (Deno)
+    ├── match-ride/           # matching : propose la demande au conducteur suivant
+    ├── accept-ride/          # le conducteur accepte → course + code de montée
+    └── verify-boarding-code/ # vérifie le code côté serveur → course « en_cours »
 ```
 
 ## Migrations
@@ -17,6 +19,8 @@ supabase/
 | `20260711100100_rls.sql` | RLS sur toutes les tables : chacun ne lit que ses données, les admins lisent tout ; protection des colonnes sensibles (`role`, `phone_verified`, `average_rating`) |
 | `20260711100200_seed_ligne_pilote.sql` | Ligne pilote « Mairie–Gare » et ses 3 arrêts fixes (coordonnées provisoires, à remplacer par les vrais arrêts) |
 | `20260711110000_matching_proposals.sql` | Jeton Expo Push sur les profils + table `ride_request_proposals` (rotation du matching : un conducteur n'est sollicité qu'une fois par demande ; le conducteur peut refuser, l'acceptation passe par le serveur) |
+| `20260711120000_ride_codes.sql` | Le code de montée quitte `rides` pour la table `ride_codes`, lisible **uniquement par le passager** — la vérification se fait côté serveur |
+| `20260711120100_proposal_trip.sql` | La proposition retient le trajet précis choisi par match-ride (`trip_id`), repris par accept-ride |
 
 Principes :
 
@@ -57,6 +61,28 @@ plus tard.
 ```bash
 supabase functions deploy match-ride   # déploiement
 ```
+
+## Edge Functions `accept-ride` et `verify-boarding-code`
+
+**`accept-ride`** — POST `{ "proposal_id": "<uuid>" }` avec le JWT du
+conducteur. Vérifie que la proposition lui est adressée, encore « en_cours »
+et non expirée, puis crée la course (statut `confirmee`) sur le trajet retenu
+par match-ride et génère le **code de montée à 3 chiffres** dans `ride_codes`.
+Le code n'est jamais renvoyé au conducteur : seul le passager le lit et
+l'énonce de vive voix.
+
+**`verify-boarding-code`** — POST `{ "ride_id": "<uuid>", "code": "042" }`
+avec le JWT du conducteur. La course doit être `arrive_a_l_arret` ; le code
+est comparé côté serveur, et s'il correspond la course passe en `en_cours`
+(le trigger de la machine à états horodate le départ).
+
+## Suivi temps réel (Supabase Realtime)
+
+Aucune table : la position est diffusée en **broadcast** sur un canal dédié à
+la course, `course:{ride_id}` (événement `position`), toutes les **3 s**.
+Côté mobile : `usePublishPosition` (conducteur) et `useRidePosition`
+(passager, avec calcul d'ETA) dans `apps/mobile/src/hooks/`. Les constantes
+et le calcul d'ETA vivent dans `packages/shared/src/tracking.ts` (testés).
 
 ## Appliquer les migrations
 

@@ -217,6 +217,7 @@ Deno.serve(async (req) => {
     .insert({
       request_id: demande.id,
       driver_id: suivant.driver_id,
+      trip_id: suivant.trip_id,
       expires_at: expireA,
     });
   if (erreurProposition) {
